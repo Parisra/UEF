@@ -1,8 +1,8 @@
 #retrieve current power production
 from fusion_solar_py.client import FusionSolarClient
 
-client = FusionSolarClient("UEF2024", 
-                           "Energy2024",
+client = FusionSolarClient(user, 
+                           pw,
                            huawei_subdomain="region02eu5")
 
 # get the stats
@@ -19,8 +19,8 @@ client.log_out()
 #retreive power production throughout the day
 from fusion_solar_py.client import FusionSolarClient
 
-client = FusionSolarClient("UEF2024", 
-                           "Energy2024",
+client = FusionSolarClient(user, 
+                           pw,
                             huawei_subdomain="region02eu5")
 # get the plant ids
 plant_ids = client.get_plant_ids()
