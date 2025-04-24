@@ -50,7 +50,7 @@ def retrieve_inverter(data_path, clean_dataframe, inverter, start_date, end_date
 # Create empty dataframe to be populated
 tz = 'UTC' 
 start_date = '2024-09-01 00:00:00'
-end_date = '2024-12-01 23:55:00'
+end_date = '2025-04-23 23:55:00'
 time_index = pd.date_range(start=start_date, 
                                end=end_date, 
                                freq='5min',  

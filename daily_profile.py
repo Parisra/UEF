@@ -14,8 +14,8 @@ data=pd.read_csv('resources/clean_data.csv',
 
 data.index = pd.to_datetime(data.index, utc=True) 
 
-start_date = '2024-11-01 00:00:00'
-end_date = '2024-11-15 00:00:00'
+start_date = '2024-11-14 00:00:00'
+end_date = '2024-11-14 00:00:00'
 tz='UTC' 
 time_index_day = pd.date_range(start=start_date, 
                                  end=end_date, 
@@ -94,7 +94,7 @@ for day in time_index_day:
                           label='Inverter-{} PV string-{}'.format(inverter,pv_string),
                           linestyle=ls[inverter],
                           marker=mark[pv_string],
-                          alpha=0.7)
+                          alpha=0.5)
     
     #ax0.set_ylim([0,10])
     ax0.set_xlim(time_index[0], time_index[-1])
