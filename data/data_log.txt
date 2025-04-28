@@ -1,2 +1,15 @@
-2024? Electrician from ELTEMO visited the installation
-20241128 Electrician from ELTEMO visited the installation
+
+
+2024.09.12 Installation was turned on
+
+2024.10.22 Eltemo visited the installation and attempted to fix problem with Installation 2 with lower-than-expected production
+
+2025.01. 07 Eltemo visited the installation and labelled the strings. An attempt to fix problem with Installation 2 with lower-than-expected production
+
+2025.02.28 Eltemo visited the installation and finally connected the right number of panels on DC side and fixed the problem with Installation 2
+
+2025.03.14 Installation 2 on Building 1483 reported new problem: DC Arc fault and current backflow was observed later (the problem was first discovered on 2025.03.27)
+
+2025.03.31 Installation 2 was turned off due to the previous problem and waiting for repair
+
+2025.04.23 Technician visited site and the problem with Installation 2 was fixed 
