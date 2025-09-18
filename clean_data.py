@@ -27,7 +27,8 @@ def retrieve_DMI_measured_GHI(clean_data,start_date, end_date, tz, stationId):
     
     for d in time_index_day:
     
-        fn='D:/DMI_weather_station/{}/{}-{}-{}.txt'.format(d.year, d.year, str(d.month).zfill(2), str(d.day).zfill(2))    
+        #fn='D:/DMI_weather_station/{}/{}-{}-{}.txt'.format(d.year, d.year, str(d.month).zfill(2), str(d.day).zfill(2))    
+        fn='C:/Users/34620/Downloads/{}/{}-{}-{}.txt'.format(d.year, d.year, str(d.month).zfill(2), str(d.day).zfill(2)) 
         print('retrieving ' + fn)  
 
         with open(fn, 'r', encoding='utf-8') as f:
@@ -82,11 +83,45 @@ def retrieve_inverter(data_path, clean_data, inverter, start_date, end_date, tz)
 
     clean_data.to_csv('resources/clean_data.csv')
     return clean_data
+
+
+def retrieve_weather_station_data(data_path, clean_data, start_date, end_date, tz): 
+
+    """
+    Retrieve weather station data (collected trough solar fussion)
+    """
+
+    #index to read the datafiles, one datafile per month, 
+    time_index_month = pd.date_range(start=start_date, 
+                                     end=end_date, 
+                                     freq='M',  
+                                     tz=tz)
+    
+    for m in time_index_month:
+    
+        fn='EMI_{}_{}.xlsx'.format(m.year, str(m.month).zfill(2))
+        print('retrieving ' + fn)
+        input_data = pd.read_excel((data_path + fn),
+                                   sheet_name="5 minutes", 
+                                   index_col=3, 
+                                   header=0, 
+                                   skiprows=3,
+                                   engine='openpyxl').squeeze("columns")
+        input_data.index = pd.to_datetime(input_data.index).tz_localize(tz=tz)
+        for sensor in ['1','2','3','4']:          
+            irradiance=input_data[input_data['ManageObject']=='Logger-HV24C0309673/irradiance {}'.format(sensor)]        
+            clean_data.loc[irradiance.index,['irradiance sensor{}(W/m2)'.format(sensor)]] = irradiance['Irradiance(W/㎡)']
+
+        temp=input_data[input_data['ManageObject']=='Logger-HV24C0309673/ambient air temp']        
+        clean_data.loc[temp.index,['Ambient temperature (C)']]= temp['Ambient temperature(℃)']        
+
+    clean_data.to_csv('resources/clean_data.csv')
+    return clean_data
     
 # Create empty dataframe to be populated
 tz = 'UTC' 
-start_date = '2024-09-01 00:00:00' # '2025-05-27 00:00:00'
-end_date = '2025-06-02 23:55:00'
+start_date = '2024-09-01 00:00:00' # '2025-05-27 00:00:00' 
+end_date = '2025-10-01 23:55:00'
 time_index = pd.date_range(start=start_date, 
                                end=end_date, 
                                freq='5min',  
@@ -104,15 +139,24 @@ for inverter in [1,2]:
     clean_data = retrieve_inverter(data_path, 
                                    clean_data, 
                                    inverter=inverter,
-                                   start_date = start_date, #'2024-09-03 00:00:00', 
+                                   start_date = start_date, 
                                    end_date = end_date, 
                                    tz='CET')
 
-#retrive solar radiation data data measured at the closest DMI weather station
+#retrieve data from weather station installed next to the solar panels 
+#(data available from: 01/09/2025)
+data_path='data/weather_monthly_datafiles/'
+clean_data = retrieve_weather_station_data(data_path, 
+                                           clean_data, 
+                                           start_date='2025-09-01 00:00:00',
+                                           end_date = end_date, 
+                                           tz='CET')
 
+
+#retrive solar radiation data data measured at the closest DMI weather station
 clean_data = retrieve_DMI_measured_GHI(clean_data,  
-                                       start_date, 
-                                       end_date, 
+                                       start_date='2025-01-01 00:00:00',
+                                       end_date='2025-09-15 00:00:00', 
                                        tz='UCT',
                                        stationId = "06072",) 
 
